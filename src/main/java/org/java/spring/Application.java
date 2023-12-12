@@ -3,6 +3,11 @@ package org.java.spring;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.java.spring.auth.conf.AuthConf;
+import org.java.spring.auth.db.pojo.Role;
+import org.java.spring.auth.db.pojo.User;
+import org.java.spring.auth.db.service.RoleService;
+import org.java.spring.auth.db.service.UserService;
 import org.java.spring.db.pojo.Discount;
 import org.java.spring.db.pojo.Ingredient;
 import org.java.spring.db.pojo.Pizza;
@@ -26,6 +31,12 @@ public class Application implements CommandLineRunner {
 	
 	@Autowired
 	private IngredientService ingredientService;
+	
+	@Autowired
+	private RoleService roleService;
+	
+	@Autowired
+	private UserService userService;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
@@ -58,6 +69,22 @@ public class Application implements CommandLineRunner {
         pizzaService.save(new Pizza("Capricciosa", "Pizza con prosciutto, funghi e carciofi", "url_capricciosa", 11.49f, mozzarella, mushrooms));
         
         List<Pizza> pizzas = pizzaService.findAll();
+        
+        // AUTH
+        
+        Role roleUser = new Role("USER");
+		Role roleAdmin = new Role("ADMIN");
+		
+		roleService.save(roleUser);
+		roleService.save(roleAdmin);
+		
+		String password = AuthConf.passwordEncoder().encode("password");
+		
+		User heroUser = new User("heroUser", password, roleUser);
+		User heroAdmin = new User("heroAdmin", password, roleAdmin);
+		
+		userService.save(heroUser);
+		userService.save(heroAdmin);
         
         for (Pizza pizza : pizzas) {
             LocalDate startDate = LocalDate.now();

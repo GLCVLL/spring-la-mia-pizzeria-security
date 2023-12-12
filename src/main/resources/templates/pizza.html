@@ -40,10 +40,10 @@
 					</li>
 				</ul>
 			</div>
-            <div class="d-flex my-3">
+            <div sec:authorize="hasAuthority('ADMIN')" class="d-flex my-3">
 				<a class="btn btn-warning me-2" th:href="@{/pizzas/edit/{id} (id=*{id})}">Modifica</a>
                 <form th:action="@{/pizzas/delete/{id} (id=*{id})}" method="POST">
-                      <input type="submit" value="DELETE" class="btn btn-danger">
+                      <input type="submit" value="Elimina Pizza" class="btn btn-danger">
                 </form>
 			</div>
             <a class="btn btn-primary" th:href="@{/}">Torna alla lista Pizze</a>
