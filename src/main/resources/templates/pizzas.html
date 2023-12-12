@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Pizzeria</title>
+
+<!-- Bootstrap CSS -->
+<link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.1.3/css/bootstrap.min.css}"/>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Pizzas:</h1>
+        
+        <form class="my-4">
+            <label for="search">Cerca per nome:</label>
+            <input type="text" id="search" name="name" th:value="${name}">
+            <button class="btn btn-primary" type="submit">Cerca</button>
+        </form>
+                
+        <ul th:if="${not #lists.isEmpty(pizzas)}">
+            <li th:each="pizza : ${pizzas}" th:object="${pizza}">
+                <a th:href="@{/pizzas/{id}(id=*{id})}">
+                    <p th:text="${pizza.name}"></p>
+            </li>
+        </ul>
+        
+        <a class="btn btn-success my-4" href="/pizzas/new">Crea una nuova Pizza</a>
+
+        
+        <div th:if="${#lists.isEmpty(pizzas)}">
+            <p>Nessuna pizza trovata</p>
+            <a class="btn btn-primary" href="/">Torna indietro</a>
+        </div>
+    </div>
+
+
+<!-- Bootstrap Bundle with Popper -->
+<script th:src="@{/webjars/bootstrap/5.1.3/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

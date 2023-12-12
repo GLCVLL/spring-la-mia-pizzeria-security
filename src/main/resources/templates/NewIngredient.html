@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Nuovo Ingrediente</title>
+
+<!-- Bootstrap CSS -->
+<link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.1.3/css/bootstrap.min.css}"/>
+</head>
+<body>
+	
+	<div class="container mt-3">
+    <h2>Nuovo Ingrediente</h2>
+    <form method="post" th:object="${ingredient}">
+        <div class="form-group">
+            <label for="name">Nome:</label>
+            <input type="text" class="form-control" id="name" name="name" th:field="*{name}" required>
+        </div>
+        <button type="submit" class="btn btn-primary my-3">Salva</button>
+    </form>
+    <a href="/ingredients" class="btn btn-secondary mt-3">Torna Indietro</a>
+</div>
+<!-- Bootstrap Bundle with Popper -->
+<script th:src="@{/webjars/bootstrap/5.1.3/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>
