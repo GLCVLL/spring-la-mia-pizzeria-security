@@ -3,7 +3,9 @@ package org.java.spring.controller;
 import java.util.List;
 
 import org.java.spring.db.pojo.Ingredient;
+import org.java.spring.db.pojo.Pizza;
 import org.java.spring.db.serv.IngredientService;
+import org.java.spring.db.serv.PizzaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +25,9 @@ public class IngredientController {
 	@Autowired
 	private IngredientService ingredientService;
 	
+	@Autowired
+	private PizzaService pizzaService;
+	
     @GetMapping
     public String getAllIngredients(Model model) {
         List<Ingredient> ingredients = ingredientService.findAll();
@@ -40,19 +45,29 @@ public class IngredientController {
     @PostMapping("/new")
     public String createIngredient(@Valid @ModelAttribute Ingredient ingredient, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
+			model.addAttribute("ingredient", ingredient);
+			
             return "newIngredient";
         }
         ingredientService.save(ingredient);
         return "redirect:/ingredients";
     }
     
-    @PostMapping("/delete/{id}")
-    public String deleteIngredient(@PathVariable int id) {
-        Ingredient ingredient = ingredientService.findById(id);
-        if (ingredient != null) {
-            ingredientService.delete(ingredient);
-        }
-        return "redirect:/ingredients";
-    }
+	@PostMapping("/delete/{id}")
+	public String deleteIngredient(@PathVariable int id) {
+		
+		Ingredient ingredient = ingredientService.findById(id);
+		
+		List<Pizza> ingPizzas = ingredient.getPizzas();
+		ingPizzas.forEach(p -> {
+			
+			p.getIngredients().remove(ingredient);
+			pizzaService.save(p);
+		});
+		
+		ingredientService.delete(ingredient);
+		
+		return "redirect:/ingredients";
+	}
 
 }

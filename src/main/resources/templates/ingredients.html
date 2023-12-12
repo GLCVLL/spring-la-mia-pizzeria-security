@@ -16,8 +16,8 @@
         <li th:each="ingredient : ${ingredients}" class="list-group-item">
             <span th:text="${ingredient.name}"></span>
 
-            <form method="post" style="display: inline;">
-                <button type="submit" class="btn btn-danger btn-sm float-right">Elimina</button>
+            <form method="post" th:action="@{/ingredients/delete/{id}(id=${ingredient.id})}" style="display: inline;">
+                <input type="submit" value="DELETE" class="btn btn-danger">
             </form>
         </li>
     </ul>
